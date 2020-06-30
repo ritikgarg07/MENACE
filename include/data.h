@@ -7,6 +7,7 @@
 #include <math.h>
 #include <random>
 #include <iostream>
+#include <string>
 #include "param.h"
 
 typedef std::vector<uint32_t> MatchBoxType;
@@ -15,8 +16,9 @@ typedef std::unordered_map<BoardKeyType, MatchBoxType> DatabaseType;
 class Data{
     public:
 
-        Data(std::mt19937 *gen){
+        Data(std::mt19937 *gen, std::string file_db){
             this->gen = gen;
+            this->file_db = file_db;
         }
 
         BoardType getMove(BoardKeyType key);
@@ -28,7 +30,7 @@ class Data{
 
         std::mt19937 *gen;
         DatabaseType database;
-        
+        std::string file_db;
         BoardType choosePlace(DatabaseType::iterator);
         DatabaseType::iterator createEntry(BoardKeyType key);
         

@@ -9,7 +9,7 @@ int main(){
     BoardType crosses("100000100");
     std::random_device rd;
     std::mt19937 gen(rd());
-    Data d = Data(&gen);
+    Data d = Data(&gen, "./data/database.txt");
     d.readDatabase();
     Transform t = Transform(&d);
     Transform::QueryResult q = t.makeMove(noughts, crosses);

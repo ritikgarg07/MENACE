@@ -65,11 +65,10 @@ BoardType Data::getMove(BoardKeyType key){
 }
 
 // Function that stores the database to a file
-// !SPECIFY FILE
 void Data::saveDatabase(){
     
     // Open filestream
-    std::ofstream tf_stream("./data/database.txt");
+    std::ofstream tf_stream(file_db);
 
     // First line is number of database entries
     tf_stream << this->database.size() << std::endl;
@@ -87,11 +86,10 @@ void Data::saveDatabase(){
 }
 
 // Function that reads the database from a file
-// !SPECIFY FILE
 void Data::readDatabase(){
 
     // Open filestream
-    std::ifstream tf_stream("./data/database.txt");
+    std::ifstream tf_stream(this->file_db);
 
     uint32_t no_entries = 0;
     BoardKeyType key;
