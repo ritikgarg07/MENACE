@@ -103,7 +103,7 @@ void Data::readDatabase(){
     for(uint32_t i = 0; i < no_entries; ++i){
         match_box.clear();
         tf_stream >> key;                   // Key for entry
-        for(u_int32_t j = 0; j < kSize; ++j){
+        for(uint32_t j = 0; j < kSize; ++j){
             tf_stream >> no_beads;          // Store number of beads
             match_box.push_back(no_beads);
         }
@@ -130,7 +130,7 @@ void Data::updateEntry(BoardKeyType key, BoardType move, eWinCondition result){
         change = 3;
 
     // Calculate integer representation of move played
-    u_int32_t position_index = log2(move.to_ulong());
+    uint32_t position_index = log2(move.to_ulong());
     position_index = kSize - 1 - position_index;         // Convert indexing to L to R
     
     // Update number of beads in the matchbox

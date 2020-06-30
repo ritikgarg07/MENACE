@@ -18,7 +18,7 @@ BoardType Transform::rotate90(BoardType board){
     // Encoder[i] = number of places to bitrotate i'th place on board
     uint32_t encoder[kSize] = {2, 4, 6, 7, 0, 2, 3, 5, 7};
 
-    for (u_int32_t i = 0; i < kSize; ++i){
+    for (uint32_t i = 0; i < kSize; ++i){
         // Mask to obtain i'th place on board
         mask.reset();
         mask.set(i);
@@ -42,7 +42,7 @@ BoardType Transform::reflectVertical(BoardType board){
     BoardType mask(0);
    
     // Encoder[i] = number of places to bitrotate i'th place on board
-    u_int32_t encoder[kSize] = {2, 0, 7, 2, 0, 7, 2, 0, 7};
+    uint32_t encoder[kSize] = {2, 0, 7, 2, 0, 7, 2, 0, 7};
 
     for (uint32_t i = 0; i < kSize; ++i){
         // Mask to obtain i'th place on board
