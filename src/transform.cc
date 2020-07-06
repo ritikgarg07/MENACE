@@ -215,9 +215,9 @@ Transform::QueryResult Transform::makeMove(BoardType noughts, BoardType crosses)
 void Transform::updateEntry(BoardType move, eTransformation transformation, BoardType noughts, BoardType crosses, eGameState result){
    
     // generates move and board in database layout
-    BoardType move_db = (this->*(inverse_transformation_map[transformation]))(move);
-    BoardType noughts_db = (this->*(inverse_transformation_map[transformation]))(noughts);
-    BoardType crosses_db = (this->*(inverse_transformation_map[transformation]))(crosses);
+    BoardType move_db = (this->*(transformation_map[transformation]))(move);
+    BoardType noughts_db = (this->*(transformation_map[transformation]))(noughts);
+    BoardType crosses_db = (this->*(transformation_map[transformation]))(crosses);
     // generate key for accessing database from noughts and crosses
     BoardKeyType key = 0;
     key += noughts_db.to_ulong();
