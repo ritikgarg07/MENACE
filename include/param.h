@@ -7,6 +7,8 @@
 
 const uint32_t kSize = 9;               // Size of game board
 const uint32_t kWinConditions = 8;
+const uint32_t kStartBeads = 5;
+
 
 typedef std::bitset<kSize> BoardType;   // Datatype representing board
 typedef uint32_t BoardKeyType;          // Datatype representing board key
@@ -20,5 +22,7 @@ enum eGameState{
     kCurrent = 3,
     kStatesTotal = 4
 };
+
+const int32_t bead_change[kStatesTotal - 1] = {-1, 1, 3};
 
 #endif

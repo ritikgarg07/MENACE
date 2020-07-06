@@ -30,8 +30,7 @@ DatabaseType::iterator Data::createEntry(BoardKeyType key){
     // If bit not set, add beads for that position
     for (uint32_t i = 0; i < kSize; ++i){
         if (!occupied[i])
-            // TODO: Number of initial beads
-            data_entry[kSize - 1 - i] = 5;   // Bitset indexes R to L
+            data_entry[kSize - 1 - i] = kStartBeads;   // Bitset indexes R to L
     }
 
     std::pair<DatabaseType::iterator, bool> stored = database.insert(make_pair(key, data_entry));
@@ -127,13 +126,13 @@ void Data::updateEntry(BoardKeyType key, BoardType move, eGameState result){
     // Calculate change in beads
     int32_t change = 0;
     if (result == kLose)
-        change = -1;
+        change = bead_change[kLose];
 
     else if (result == kDraw)
-        change = 1;
+        change = bead_change[kDraw];
     
     else
-        change = 3;
+        change = bead_change[kWin];
 
     // Calculate integer representation of move played
     uint32_t position_index = log2(move.to_ulong());
