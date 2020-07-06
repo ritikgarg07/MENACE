@@ -26,6 +26,7 @@ class Transform{
             transformation_map[kReflectVertical] = &Transform::reflectVertical;
             transformation_map[kReflectBackSlash] = &Transform::reflectBackSlash;
             transformation_map[kReflectForwardSlash] = &Transform::reflectForwardSlash;
+            transformation_map[kNoTransformation] = &Transform::noTransformation;
 
             // Initialize the inverse transformation map w/ inverse transformation function pointers
             inverse_transformation_map[kRotate90] = &Transform::invertRotate90;
@@ -35,6 +36,8 @@ class Transform{
             inverse_transformation_map[kReflectVertical] = &Transform::invertReflectVertical;
             inverse_transformation_map[kReflectBackSlash] = &Transform::invertReflectBackSlash;
             inverse_transformation_map[kReflectForwardSlash] = &Transform::invertReflectForwardSlash;
+            inverse_transformation_map[kNoTransformation] = &Transform::invertNoTransformation;
+
         }
 
         // enum for transformation ID's
@@ -49,6 +52,7 @@ class Transform{
             kReflectBackSlash = 5,
             kReflectForwardSlash = 6,
             kNoTransformation = 7,
+            kTranTotal = 8
         };
 
         // Structure encapsulating the 'packet' that would be sent between game and transform class
@@ -60,7 +64,7 @@ class Transform{
 
         // Main callable function for transform class
         QueryResult makeMove(BoardType noughts, BoardType crosses);
-        void updateEntry(BoardType move, eTransformation transformation, BoardType noughts, BoardType crosses, eWinCondition result);
+        void updateEntry(BoardType move, eTransformation transformation, BoardType noughts, BoardType crosses, eGameState result);
 
 
     private: 
@@ -73,6 +77,7 @@ class Transform{
 
         BoardType bitRotateRight(BoardType input, uint32_t rotate_by);
 
+        BoardType noTransformation(BoardType board);
         BoardType rotate90(BoardType board);
         BoardType rotate180(BoardType board);
         BoardType rotate270(BoardType board);
@@ -81,6 +86,7 @@ class Transform{
         BoardType reflectBackSlash(BoardType board);
         BoardType reflectForwardSlash(BoardType board);
 
+        BoardType invertNoTransformation(BoardType board);
         BoardType invertRotate90(BoardType board);
         BoardType invertRotate180(BoardType board);
         BoardType invertRotate270(BoardType board);
