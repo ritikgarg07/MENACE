@@ -1,13 +1,13 @@
 #ifndef DATA_H
 #define DATA_H
 
-
 #include <unordered_map>
 #include <fstream>
-#include <math.h>
+#include <cmath>
 #include <random>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "param.h"
 
 typedef std::vector<uint32_t> MatchBoxType;
@@ -22,7 +22,7 @@ class Data{
         }
 
         BoardType getMove(BoardKeyType key);
-        void updateEntry(BoardKeyType key, BoardType move, eWinCondition result);         // TODO: Implement
+        void updateEntry(BoardKeyType key, BoardType move, eGameState result);
         void saveDatabase();
         void readDatabase();
 
@@ -35,6 +35,5 @@ class Data{
         DatabaseType::iterator createEntry(BoardKeyType key);
         
 };
-
 
 #endif
