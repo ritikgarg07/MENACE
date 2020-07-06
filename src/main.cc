@@ -30,9 +30,6 @@ int main(){
         data.saveDatabase();
     }
 
-    for(int i = 0; i < kStatesTotal; ++i){
-        std::cout << stats[i] << std::endl;
-    }
     std::cout << "Saving database...\n";
     std::cout << "Database saved. Exiting..\n";
     return 0;

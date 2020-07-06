@@ -196,11 +196,6 @@ Transform::QueryResult Transform::makeMove(BoardType noughts, BoardType crosses)
     
     // query hash table to get move
     query_result.move = this->database_ptr->getMove(minimum_id);
-    // std::cout << "noughts: " << noughts << " crosses: " << crosses << " " << std::endl;
-    
-    // std::cout << "noughtsDB: " << (this->*(transformation_map[query_result.transformation]))(noughts) << " crossesDB: " << (this->*(transformation_map[query_result.transformation]))(crosses) << std::endl;
-    
-    // std::cout << "transformation: " << query_result.transformation << " key: " << minimum_id << std::endl;
     query_result.move = (this->*(inverse_transformation_map[query_result.transformation]))(query_result.move);
     
     return query_result;
@@ -223,8 +218,5 @@ void Transform::updateEntry(BoardType move, eTransformation transformation, Boar
     key += noughts_db.to_ulong();
     key *= std::pow(2, kSize);
     key += crosses_db.to_ulong();
-    // std::cout << "noughts: " << noughts << " crosses: " << crosses << " " << std::endl;
-    // std::cout << "noughtsDB: " << noughts_db << " crossesDB: " << crosses_db << " " << std::endl;
-    // std::cout << "transformation: " << transformation << " key: " << key << std::endl;
     this->database_ptr->updateEntry(key, move_db, result);
 }
