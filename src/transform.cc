@@ -109,6 +109,12 @@ BoardType Transform::reflectHorizontal(BoardType board){
     return reflectVertical(rotate180(board));
 }
 
+// Function that takes a board and returns a board that is idempotent
+// @param: board: input board
+BoardType Transform::noTransformation(BoardType board){
+    return board;
+}
+
 // Function that takes a board and returns a board that is inverse of reflection about the horizontal axis
 // @param: board: input board to reflect 
 BoardType Transform::invertReflectHorizontal(BoardType board){
@@ -151,33 +157,23 @@ BoardType Transform::invertRotate270(BoardType board){
     return rotate90(board);
 }
 
+// Function that takes a board and returns a board that is idempotent
+// @param: board: input board
+BoardType Transform::invertNoTransformation(BoardType board){
+    return board;
+}
+
 // Function that applies a suitable transformation to the game state to call the hash table
 // Returns a struct containing transformation applied, and the move chosen
 // @param: noughts: game board for noughts
 // @param: crosses: game board for crosses
 Transform::QueryResult Transform::makeMove(BoardType noughts, BoardType crosses){
-
     QueryResult query_result = QueryResult();   // return packet
     BoardKeyType minimum_id = std::numeric_limits<BoardKeyType>::max();         // minimum id of all resulting boards
     BoardKeyType current_id = 0;                // current id of board
     BoardType current_board(0);             // board for iteration purposes
 
-    // checking original state board
-    // shift 9 bits for creation of ID w/o transformation
-    current_board = noughts;
-    current_id += current_board.to_ulong();
-    current_id *= std::pow(2, kSize);
     
-
-    // create ID w/o transformation
-    current_board = crosses;
-    current_id += current_board.to_ulong();
-    
-    if (current_id < minimum_id){
-        minimum_id = current_id;
-        query_result.transformation = kNoTransformation;
-    }
-
     // apply transformations to bring to standard state
     for (uint32_t i = 0; i < kTranTotal; ++i){
         current_id = 0;
@@ -200,7 +196,13 @@ Transform::QueryResult Transform::makeMove(BoardType noughts, BoardType crosses)
     
     // query hash table to get move
     query_result.move = this->database_ptr->getMove(minimum_id);
+    // std::cout << "noughts: " << noughts << " crosses: " << crosses << " " << std::endl;
+    
+    // std::cout << "noughtsDB: " << (this->*(transformation_map[query_result.transformation]))(noughts) << " crossesDB: " << (this->*(transformation_map[query_result.transformation]))(crosses) << std::endl;
+    
+    // std::cout << "transformation: " << query_result.transformation << " key: " << minimum_id << std::endl;
     query_result.move = (this->*(inverse_transformation_map[query_result.transformation]))(query_result.move);
+    
     return query_result;
 }
 
@@ -210,18 +212,19 @@ Transform::QueryResult Transform::makeMove(BoardType noughts, BoardType crosses)
 // @param: noughts: game board for noughts
 // @param: crosses: game board for crosses
 // @param: result: result of the game
-void Transform::updateEntry(BoardType move,eTransformation transformation, BoardType noughts, BoardType crosses, eWinCondition result){
-    
+void Transform::updateEntry(BoardType move, eTransformation transformation, BoardType noughts, BoardType crosses, eGameState result){
+   
     // generates move and board in database layout
     BoardType move_db = (this->*(inverse_transformation_map[transformation]))(move);
     BoardType noughts_db = (this->*(inverse_transformation_map[transformation]))(noughts);
     BoardType crosses_db = (this->*(inverse_transformation_map[transformation]))(crosses);
-
     // generate key for accessing database from noughts and crosses
     BoardKeyType key = 0;
     key += noughts_db.to_ulong();
     key *= std::pow(2, kSize);
     key += crosses_db.to_ulong();
-    
+    // std::cout << "noughts: " << noughts << " crosses: " << crosses << " " << std::endl;
+    // std::cout << "noughtsDB: " << noughts_db << " crossesDB: " << crosses_db << " " << std::endl;
+    // std::cout << "transformation: " << transformation << " key: " << key << std::endl;
     this->database_ptr->updateEntry(key, move_db, result);
 }
