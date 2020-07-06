@@ -50,6 +50,12 @@ BoardType Data::getMove(BoardKeyType key){
     if (data_iter == database.end())
         data_iter = createEntry(key);
     
+    bool zeros = std::all_of(data_iter->second.begin(), data_iter->second.end(), [](uint32_t i) { return i==0; });
+    if(zeros){
+        database.erase(data_iter);
+        data_iter = createEntry(key);
+    }
+
     BoardType move;
 
     // create board with all occupied places as 1's
@@ -116,14 +122,16 @@ void Data::readDatabase(){
 // @param: move: move that was made (db layout)
 // @param: result: result of game
 // !HARDCODED BEAD CHANGES
-void Data::updateEntry(BoardKeyType key, BoardType move, eWinCondition result){
+void Data::updateEntry(BoardKeyType key, BoardType move, eGameState result){
     
     // Calculate change in beads
     int32_t change = 0;
-    if (result == klose)
+    if (result == kLose)
         change = -1;
-    else if (result == kdraw)
+
+    else if (result == kDraw)
         change = 1;
+    
     else
         change = 3;
 
@@ -133,6 +141,9 @@ void Data::updateEntry(BoardKeyType key, BoardType move, eWinCondition result){
     
     // Update number of beads in the matchbox
     DatabaseType::iterator database_iter = database.find(key);
+    if(database_iter == database.end()){
+        std::cout << "ERROR!" << std::endl;
+        exit(0);
+    }
     (database_iter->second)[position_index] += change;
-
 }
